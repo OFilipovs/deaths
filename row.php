@@ -1,18 +1,35 @@
 <?php
 
-class Row extends ColumnHeaders
+class Row extends Table
 {
-    private string $date;
-    private string $reason;
-    private string $cause;
-    private array $causes = [];
-    public function __construct(string $date, string $reason, string $cause = "")
+    private array $row;
+    public function __construct(array $row)
     {
-        $this->date = $date;
-        $this->reason = $reason;
-        $this->cause = $cause;
+        $this->row = $this->formatData($row);
     }
 
+    public function formatData (array $row): array{
+
+        for ($i = 0, $count = count($row); $i < $count; $i++){
+            if (strpos($row[$i], ";") !== false){
+                $newData = explode(";", $row[$i]);
+                if ($newData[0] === $newData[1]){
+                    $newData[1] = "";
+                }
+                $row[$i] = $newData;
+
+                }
+            }
+        return $row;
+    }
+    /**
+     * @return array
+     */
+
+    public function getRow(): array
+    {
+        return $this->row;
+    }
     /**
      * @return array
      */
